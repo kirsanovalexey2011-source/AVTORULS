@@ -50,4 +50,4 @@ GARAGE 78 — вымышленный демонстрационный бренд
 
 ## Изображение
 
-Фотография мастерской загружается с Unsplash. Автор: Xalo Mustafa. [Оригинальная публикация](https://unsplash.com/photos/black-cars-in-auto-repair-shop-JrC5BK-kWYE). Используется в соответствии с Unsplash License.
+Фотографии загружаются с Unsplash и используются в соответствии с Unsplash License: Xalo Mustafa — [автомобили в мастерской](https://unsplash.com/photos/black-cars-in-auto-repair-shop-JrC5BK-kWYE); Dextar Studio — [диагностика двигателя](https://unsplash.com/photos/mechanic-inspecting-a-car-engine-with-hood-open-erWc6mrOq_I).
