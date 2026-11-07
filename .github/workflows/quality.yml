@@ -1,0 +1,40 @@
+name: Site quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Static site checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate page structure and local resources
+        run: python scripts/check_site.py
+
+      - name: Check browser JavaScript syntax
+        run: |
+          node --check assets/js/site-config.js
+          node --check assets/js/main.js
+
+      - name: Check Cloudflare Worker syntax
+        run: node --check cloudflare/worker.js
