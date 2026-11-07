@@ -20,6 +20,7 @@ function makePayload(overrides = {}) {
     service: "Диагностика автомобиля",
     message: "Проверка тестовой заявки",
     website: "",
+    consent: true,
     startedAt: Date.now() - 3000,
     ...overrides
   };
@@ -58,6 +59,15 @@ test("answers CORS preflight without a response body", async () => {
   assert.equal(response.status, 204);
   assert.equal(response.headers.get("Access-Control-Allow-Origin"), origin);
   assert.equal(await response.text(), "");
+});
+
+test("requires explicit personal-data consent", async () => {
+  const response = await worker.fetch(
+    makeRequest(makePayload({ consent: false })),
+    env
+  );
+  assert.equal(response.status, 422);
+  assert.equal((await response.json()).ok, false);
 });
 
 test("rejects invalid phone numbers without calling Telegram", async () => {
