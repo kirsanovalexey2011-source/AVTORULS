@@ -366,3 +366,37 @@ img { display: block; max-width: 100%; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+
+/* Form, configuration and reduced-risk defaults. */
+:where([hidden]) { display: none !important; }
+.hp-field {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+}
+.consent a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.consent a:hover { color: #e3ffc0; }
+.button:disabled {
+  cursor: wait;
+  opacity: .7;
+  transform: none;
+}
+.field input:user-invalid,
+.field select:user-invalid,
+.field textarea:user-invalid {
+  border-color: #dd806f;
+}
+@media (max-width: 420px) {
+  .form-heading { font-size: 9px; }
+  .price-row { grid-template-columns: 18px minmax(0, 1fr) auto; }
+  .price-row__name { overflow-wrap: anywhere; }
+}
