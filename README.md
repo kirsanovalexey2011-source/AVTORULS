@@ -102,14 +102,14 @@ GARAGE 78 — вымышленная концепция, а не реальны�
 
 ## Развёртывание Worker через Wrangler CLI
 
-В репозитории уже есть `cloudflare/wrangler.toml`. После установки Node.js и входа в Cloudflare:
+В репозитории уже есть `cloudflare/wrangler.jsonc`. После установки Node.js и входа в Cloudflare:
 
 ```bash
 cd cloudflare
-npx wrangler login
-npx wrangler secret put TELEGRAM_BOT_TOKEN
-npx wrangler secret put TELEGRAM_CHAT_ID
-npx wrangler deploy
+npx wrangler@latest login
+npx wrangler@latest secret put TELEGRAM_BOT_TOKEN
+npx wrangler@latest secret put TELEGRAM_CHAT_ID
+npx wrangler@latest deploy
 ```
 
 Команды `secret put` запрашивают значения в интерактивном режиме — не вставляйте токены в командную строку, историю Git или публичные файлы. Переменная `ALLOWED_ORIGINS` задаётся в `wrangler.toml`; обновите её при переходе на собственный домен.
