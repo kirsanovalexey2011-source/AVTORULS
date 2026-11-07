@@ -225,10 +225,10 @@
           <form id="booking-form" novalidate>
             <div class="form-heading"><span>ФОРМА ОБРАЩЕНИЯ</span><span>~ 1 МИНУТА</span></div>
             <div class="form-grid">
-              <label class="field"><span>Ваше имя <i>*</i></span><input name="name" type="text" autocomplete="name" placeholder="Как к вам обращаться" minlength="2" required></label>
-              <label class="field"><span>Телефон <i>*</i></span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 (___) ___-__-__" required></label>
+              <label class="field"><span>Ваше имя <i>*</i></span><input name="name" type="text" autocomplete="name" maxlength="80" placeholder="Как к вам обращаться" minlength="2" required></label>
+              <label class="field"><span>Телефон <i>*</i></span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="32" placeholder="+7 (___) ___-__-__" required></label>
               <label class="field field--full"><span>Что нужно сделать? <i>*</i></span><select name="service" required><option value="">Выберите направление</option><option>Диагностика автомобиля</option><option>Ремонт подвески</option><option>Тормозная система</option><option>Техническое обслуживание</option><option>Кондиционер и климат</option><option>Электрика и электроника</option><option>Другое / пока не знаю</option></select></label>
-              <label class="field field--full"><span>Автомобиль и описание проблемы</span><textarea name="message" rows="3" placeholder="Например: Kia Rio, появился стук при проезде неровностей"></textarea></label>
+              <label class="field field--full"><span>Автомобиль и описание проблемы</span><textarea name="message" rows="3" maxlength="1200" placeholder="Например: Kia Rio, появился стук при проезде неровностей"></textarea></label>
             </div>
             <label class="consent"><input type="checkbox" name="consent" required><span id="consent-text">Подтверждаю, что это демонстрационная форма: данные будут подготовлены только в браузере <i>*</i></span></label>
             <p class="privacy-link-row" id="privacy-link-row" hidden><a id="privacy-link" href="#" target="_blank" rel="noopener noreferrer">Политика конфиденциальности ↗</a></p>
