@@ -1,0 +1,1 @@
+User-agent: *\nAllow: /\n\nSitemap: https://kirsanovalexey2011-source.github.io/AVTORULS/sitemap.xml\n
