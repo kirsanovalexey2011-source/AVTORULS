@@ -4,12 +4,12 @@
  * Required Worker secrets / variables:
  *   TELEGRAM_BOT_TOKEN  (secret)
  *   TELEGRAM_CHAT_ID    (secret)
- *   ALLOWED_ORIGINS     (variable, comma-separated exact origins; no trailing slash)
+ *   ALLOWED_ORIGINS     (comma-separated exact origins, without trailing slash)
  *
  * Example ALLOWED_ORIGINS:
  *   https://kirsanovalexey2011-source.github.io
  *
- * Deploy this Worker separately. GitHub Pages cannot run server-side code.
+ * Deploy separately from GitHub Pages. Never put Telegram credentials in site-config.js.
  */
 const ALLOWED_SERVICES = new Set([
   "Диагностика автомобиля",
@@ -21,11 +21,12 @@ const ALLOWED_SERVICES = new Set([
   "Другое / пока не знаю"
 ]);
 
-function json(data, status, origin) {
+function responseHeaders(origin) {
   const headers = new Headers({
     "Content-Type": "application/json; charset=utf-8",
     "Cache-Control": "no-store",
-    "Vary": "Origin"
+    "Vary": "Origin",
+    "X-Content-Type-Options": "nosniff"
   });
   if (origin) {
     headers.set("Access-Control-Allow-Origin", origin);
@@ -33,7 +34,14 @@ function json(data, status, origin) {
     headers.set("Access-Control-Allow-Headers", "Content-Type");
     headers.set("Access-Control-Max-Age", "86400");
   }
-  return new Response(JSON.stringify(data), { status, headers });
+  return headers;
+}
+
+function json(data, status, origin) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: responseHeaders(origin)
+  });
 }
 
 function allowedOrigin(request, env) {
@@ -54,7 +62,9 @@ export default {
     const origin = allowedOrigin(request, env);
     if (!origin) return json({ ok: false, error: "Origin is not allowed." }, 403);
 
-    if (request.method === "OPTIONS") return json({ ok: true }, 204, origin);
+    if (request.method === "OPTIONS") {
+      return new Response(null, { status: 204, headers: responseHeaders(origin) });
+    }
     if (request.method !== "POST") return json({ ok: false, error: "Method not allowed." }, 405, origin);
 
     const contentType = request.headers.get("Content-Type") || "";
@@ -62,14 +72,24 @@ export default {
       return json({ ok: false, error: "JSON is required." }, 415, origin);
     }
 
-    const declaredLength = Number(request.headers.get("Content-Length") || 0);
-    if (declaredLength > 12000) return json({ ok: false, error: "Request is too large." }, 413, origin);
+    let rawBody = "";
+    try {
+      rawBody = await request.text();
+    } catch {
+      return json({ ok: false, error: "Unable to read request." }, 400, origin);
+    }
+    if (new TextEncoder().encode(rawBody).length > 12000) {
+      return json({ ok: false, error: "Request is too large." }, 413, origin);
+    }
 
     let payload;
     try {
-      payload = await request.json();
+      payload = JSON.parse(rawBody);
     } catch {
       return json({ ok: false, error: "Invalid JSON." }, 400, origin);
+    }
+    if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+      return json({ ok: false, error: "Invalid request body." }, 400, origin);
     }
 
     // Honeypot: silently accept automated submissions without forwarding them.
@@ -85,20 +105,19 @@ export default {
     const phone = clean(payload.phone, 32);
     const service = clean(payload.service, 80);
     const message = clean(payload.message, 1200);
-    const phoneDigits = phone.replace(/\\D/g, "");
+    const phoneDigits = phone.replace(/\D/g, "");
 
     if (name.length < 2) return json({ ok: false, error: "Please enter your name." }, 422, origin);
     if (phoneDigits.length !== 11 || phoneDigits[0] !== "7") {
       return json({ ok: false, error: "Please enter a valid Russian phone number." }, 422, origin);
     }
     if (!ALLOWED_SERVICES.has(service)) return json({ ok: false, error: "Please select a valid service." }, 422, origin);
-    if (message.length > 1200) return json({ ok: false, error: "The message is too long." }, 422, origin);
 
     if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) {
       return json({ ok: false, error: "The notification channel is not configured." }, 503, origin);
     }
 
-    const text = [
+    const telegramText = [
       "Новая заявка — GARAGE 78",
       "",
       "Имя: " + name,
@@ -107,7 +126,7 @@ export default {
       "Автомобиль / описание: " + (message || "Не указано"),
       "",
       "Получено: " + new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" })
-    ].join("\\n");
+    ].join("\n");
 
     try {
       const telegramResponse = await fetch(
@@ -117,12 +136,15 @@ export default {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             chat_id: env.TELEGRAM_CHAT_ID,
-            text
+            text: telegramText,
+            disable_web_page_preview: true
           })
         }
       );
-      const telegramResult = await telegramResponse.json();
-      if (!telegramResponse.ok || !telegramResult.ok) {
+
+      let telegramResult = {};
+      try { telegramResult = await telegramResponse.json(); } catch (_) {}
+      if (!telegramResponse.ok || telegramResult.ok !== true) {
         return json({ ok: false, error: "The notification could not be delivered." }, 502, origin);
       }
       return json({ ok: true }, 200, origin);
