@@ -177,7 +177,8 @@
       phone: String(data.get("phone") || "").trim(),
       service: String(data.get("service") || "").trim(),
       message: String(data.get("message") || "").trim(),
-      website: String(data.get("website") || "").trim()
+      website: String(data.get("website") || "").trim(),
+      consent: Boolean(data.get("consent"))
     };
   };
 
@@ -191,16 +192,12 @@
   ].join("\n");
 
   if (formIsConfigured && consentText) {
-    consentText.replaceChildren(
-      document.createTextNode("Даю согласие на обработку персональных данных согласно "),
-      Object.assign(document.createElement("a"), {
-        href: privacyUrl,
-        target: "_blank",
-        rel: "noopener noreferrer",
-        textContent: "Политике конфиденциальности"
-      }),
-      document.createTextNode(" *")
-    );
+    consentText.textContent = "Даю согласие на обработку персональных данных *";
+    const policyLink = document.querySelector("#privacy-link");
+    if (policyLink) {
+      policyLink.href = privacyUrl;
+      policyLink.hidden = false;
+    }
     if (formHint) formHint.textContent = "Заявка будет передана администратору сервиса. Поля со звёздочкой обязательны.";
     if (submitButton) submitButton.innerHTML = 'Отправить заявку <span aria-hidden="true">↗</span>';
     document.querySelector(".booking-assurance b")?.replaceChildren(document.createTextNode("Заявка передаётся защищённо"));
