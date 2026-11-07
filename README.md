@@ -98,3 +98,20 @@ GARAGE 78 — вымышленная концепция, а не реальны�
 
 - Xalo Mustafa — [Black cars in auto repair shop](https://unsplash.com/photos/black-cars-in-auto-repair-shop-JrC5BK-kWYE), Unsplash License.
 - Artem Podrez — [A Mechanic Working on an Engine in an Auto Repair Shop](https://www.pexels.com/photo/a-mechanic-working-on-an-engine-in-an-auto-repair-shop-8986040/), Pexels License.
+
+
+## Развёртывание Worker через Wrangler CLI
+
+В репозитории уже есть `cloudflare/wrangler.toml`. После установки Node.js и входа в Cloudflare:
+
+```bash
+cd cloudflare
+npx wrangler login
+npx wrangler secret put TELEGRAM_BOT_TOKEN
+npx wrangler secret put TELEGRAM_CHAT_ID
+npx wrangler deploy
+```
+
+Команды `secret put` запрашивают значения в интерактивном режиме — не вставляйте токены в командную строку, историю Git или публичные файлы. Переменная `ALLOWED_ORIGINS` задаётся в `wrangler.toml`; обновите её при переходе на собственный домен.
+
+Для локальных проверок Worker используются встроенные возможности Node.js: `node --test tests/*.test.mjs`. Тесты подменяют вызов Telegram API и не отправляют реальные сообщения.
