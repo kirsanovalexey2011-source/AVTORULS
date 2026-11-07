@@ -27,8 +27,8 @@
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 94px; }
-body { margin: 0; background: var(--page); color: var(--ink); font-family: "Onest", "Manrope", sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; transition: background .25s ease, color .25s ease; }
-body, button, input, select, textarea { font-family: "Onest", "Manrope", sans-serif; }
+body { margin: 0; background: var(--page); color: var(--ink); font-family: "Onest", sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; transition: background .25s ease, color .25s ease; }
+body, button, input, select, textarea { font-family: "Onest", sans-serif; }
 button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 a { color: inherit; text-decoration: none; }
 button { color: inherit; }
