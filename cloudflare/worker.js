@@ -71,6 +71,16 @@ export default {
     }
     if (request.method !== "POST") return json({ ok: false, error: "Метод запроса не поддерживается." }, 405, origin);
 
+    if (env.FORM_RATE_LIMITER) {
+      const clientKey = request.headers.get("CF-Connecting-IP") || "unknown";
+      try {
+        const { success } = await env.FORM_RATE_LIMITER.limit({ key: clientKey });
+        if (!success) return json({ ok: false, error: "Слишком много заявок. Попробуйте позже." }, 429, origin);
+      } catch {
+        return json({ ok: false, error: "Не удалось проверить ограничение запросов. Попробуйте позже." }, 503, origin);
+      }
+    }
+
     const contentLength = Number(request.headers.get("Content-Length") || 0);
     if (contentLength > 12000) return json({ ok: false, error: "Слишком большой запрос." }, 413, origin);
 
