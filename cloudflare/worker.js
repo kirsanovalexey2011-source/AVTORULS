@@ -91,12 +91,25 @@ export default {
 
     let rawBody = "";
     try {
-      rawBody = await request.text();
+      const reader = request.body?.getReader();
+      if (!reader) return json({ ok: false, error: "Пустой запрос." }, 400, origin);
+
+      const decoder = new TextDecoder();
+      let receivedBytes = 0;
+      while (true) {
+        const chunk = await reader.read();
+        if (chunk.done) break;
+
+        receivedBytes += chunk.value.byteLength;
+        if (receivedBytes > 12000) {
+          await reader.cancel();
+          return json({ ok: false, error: "Слишком большой запрос." }, 413, origin);
+        }
+        rawBody += decoder.decode(chunk.value, { stream: true });
+      }
+      rawBody += decoder.decode();
     } catch {
       return json({ ok: false, error: "Не удалось прочитать запрос." }, 400, origin);
-    }
-    if (new TextEncoder().encode(rawBody).length > 12000) {
-      return json({ ok: false, error: "Слишком большой запрос." }, 413, origin);
     }
 
     let payload;
