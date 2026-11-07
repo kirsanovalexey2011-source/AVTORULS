@@ -71,7 +71,7 @@ img { display: block; max-width: 100%; }
 .menu-toggle[aria-expanded="true"] span:last-child { transform: rotate(-45deg); }
 .hero { position: relative; display: flex; min-height: 690px; overflow: hidden; align-items: stretch; isolation: isolate; background: #171e19; color: var(--white); }
 .hero__image, .hero__overlay { position: absolute; z-index: -1; inset: 0; }
-.hero__image { background-image: url("https://images.unsplash.com/photo-1792326103553-4e4e8964279e?auto=format&fit=crop&w=2400&q=88"); background-size: cover; background-position: center 54%; transform: scale(1.015); animation: hero-settle 1.4s ease-out both; }
+.hero__image { background-image: url("https://images.unsplash.com/photo-1792326103553-4e4e8964279e?auto=format&fit=crop&w=1800&q=82"); background-size: cover; background-position: center 54%; transform: scale(1.015); animation: hero-settle 1.4s ease-out both; }
 .hero__overlay { background: linear-gradient(90deg, rgba(15,22,17,.97) 0%, rgba(15,22,17,.91) 36%, rgba(15,22,17,.58) 68%, rgba(15,22,17,.2) 100%), linear-gradient(0deg, rgba(13,19,15,.5), transparent 44%); }
 .hero__content { position: relative; display: flex; min-height: 690px; flex-direction: column; justify-content: center; padding-top: 75px; padding-bottom: 92px; }
 .hero__copy { max-width: 740px; }
