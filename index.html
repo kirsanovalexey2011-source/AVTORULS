@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#171a18">
+  <meta name="theme-color" content="#171a18">\n  <meta name="referrer" content="strict-origin-when-cross-origin">\n  <meta name="robots" content="index,follow">
   <meta name="description" content="GARAGE 78 — концепт современного автосервиса в Санкт-Петербурге. Диагностика, техническое обслуживание и ремонт автомобиля.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="GARAGE 78 — сервис с точным подходом">
   <meta property="og:description" content="Диагностика и ремонт автомобиля с понятным планом работ и согласованием стоимости.">
-  <meta property="og:image" content="https://images.unsplash.com/photo-1792326103553-4e4e8964279e?auto=format&fit=crop&w=1200&q=85">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1792326103553-4e4e8964279e?auto=format&fit=crop&w=1200&q=85">\n  <meta property="og:locale" content="ru_RU">\n  <meta property="og:url" content="https://kirsanovalexey2011-source.github.io/AVTORULS/">\n  <meta name="twitter:card" content="summary_large_image">\n  <link rel="canonical" href="https://kirsanovalexey2011-source.github.io/AVTORULS/">
   <meta name="color-scheme" content="light dark">
   <title>GARAGE 78 — автосервис с точным подходом</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">\n  <link rel="preconnect" href="https://images.unsplash.com">\n  <link rel="preconnect" href="https://images.pexels.com">\n  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1792326103553-4e4e8964279e?auto=format&fit=crop&w=1800&q=82">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Onest:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
@@ -43,7 +43,7 @@
       </nav>
 
       <div class="header__actions">
-        <a class="header__phone" href="#booking">Обсудить ремонт <span aria-hidden="true">↗</span></a>
+        <a class="header__phone" id="header-phone" href="#booking">Обсудить ремонт <span aria-hidden="true">↗</span></a>
         <button class="theme-toggle" type="button" aria-label="Включить тёмную тему" title="Переключить тему">
           <svg class="theme-toggle__sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
           <svg class="theme-toggle__moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.3A8.6 8.6 0 0 1 8.7 3.8 8.7 8.7 0 1 0 20.2 15.3Z"/></svg>
@@ -152,7 +152,7 @@
     <section class="approach-section" id="approach">
       <div class="container approach-grid">
         <div class="approach-photo reveal">
-          <img src="https://images.unsplash.com/photo-1771340012378-3c86cb649193?auto=format&fit=crop&w=1400&q=85" alt="Механик проверяет двигатель автомобиля в ремонтной мастерской" loading="lazy">
+          <img src="https://images.pexels.com/photos/8986040/pexels-photo-8986040.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Механик в рабочей одежде проводит ремонт двигателя в мастерской" width="1400" height="933" loading="lazy" decoding="async">
           <div class="approach-photo__label"><span>GARAGE 78</span><span>РАБОТАЕМ ПО ДЕЛУ</span></div>
         </div>
         <div class="approach-copy reveal">
@@ -221,9 +221,9 @@
               <label class="field field--full"><span>Что нужно сделать? <i>*</i></span><select name="service" required><option value="">Выберите направление</option><option>Диагностика автомобиля</option><option>Ремонт подвески</option><option>Тормозная система</option><option>Техническое обслуживание</option><option>Кондиционер и климат</option><option>Электрика и электроника</option><option>Другое / пока не знаю</option></select></label>
               <label class="field field--full"><span>Автомобиль и описание проблемы</span><textarea name="message" rows="3" placeholder="Например: Kia Rio, появился стук при проезде неровностей"></textarea></label>
             </div>
-            <label class="consent"><input type="checkbox" name="consent" required><span>Я понимаю, что это демо-форма: данные не отправляются на сервер <i>*</i></span></label>
+            <label class="consent"><input type="checkbox" name="consent" required><span id="consent-text">Подтверждаю, что это демонстрационная форма: данные будут подготовлены только в браузере <i>*</i></span></label>
             <button class="button button--accent button--wide" type="submit">Подготовить заявку <span>↗</span></button>
-            <p class="form-hint">Поля со звёздочкой обязательны. Данные не отправляются на сервер.</p>
+            <div class="hp-field" aria-hidden="true"><label>Оставьте это поле пустым<input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>\n            <p class="form-hint" id="form-hint">Поля со звёздочкой обязательны. Данные не отправляются на сервер.</p>
             <div class="form-result" id="form-result" role="status" aria-live="polite" hidden>
               <b>Сообщение подготовлено</b>
               <p id="form-summary"></p>
@@ -257,7 +257,7 @@
           <span class="footer-demo">КОНЦЕПТ ДЛЯ ПОРТФОЛИО · НЕ РЕАЛЬНЫЙ АВТОСЕРВИС</span>
         </div>
         <div class="footer-col"><span class="footer-title">НАВИГАЦИЯ</span><a href="#services">Услуги</a><a href="#approach">Подход</a><a href="#process">Как работаем</a><a href="#prices">Цены</a></div>
-        <div class="footer-col"><span class="footer-title">СВЯЗАТЬСЯ</span><a href="#booking">Оставить заявку</a><span>Санкт-Петербург</span><span>Контакты и адрес будут добавлены</span></div>
+        <div class="footer-col"><span class="footer-title">СВЯЗАТЬСЯ</span><a href="#booking">Оставить заявку</a><a id="footer-phone" href="#" hidden></a><a id="footer-email" href="#" hidden></a><span id="footer-address">Адрес и контакты будут добавлены перед запуском</span><span id="footer-hours" hidden></span><a id="footer-map" href="#" target="_blank" rel="noopener noreferrer" hidden>Открыть карту ↗</a></div>
         <div class="footer-cta"><span>ЕСТЬ ВОПРОС ПО АВТОМОБИЛЮ?</span><a href="#booking">Давайте обсудим <b>↗</b></a></div>
       </div>
       <div class="footer-bottom"><span>© <span id="year">2026</span> GARAGE 78. DEMO PROJECT.</span><a href="#top">НАВЕРХ ↑</a><span>СДЕЛАНО С ВНИМАНИЕМ К ДЕТАЛЯМ</span></div>
@@ -265,6 +265,6 @@
   </footer>
 
   <button class="back-to-top" type="button" aria-label="Наверх">↑</button>
-  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/site-config.js" defer></script>\n  <script src="assets/js/main.js" defer></script>
 </body>
 </html>
