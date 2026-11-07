@@ -124,6 +124,19 @@ if config_file.is_file():
     if "TELEGRAM_BOT_TOKEN" in config or "api.telegram.org/bot" in config:
         fail("A Telegram secret must never be stored in public site configuration")
 
+wrangler_config = ROOT / "cloudflare/wrangler.jsonc"
+if wrangler_config.is_file():
+    import json
+    try:
+        config = json.loads(wrangler_config.read_text(encoding="utf-8"))
+        if config.get("name") != "garage78-booking":
+            fail("Wrangler configuration has an unexpected Worker name")
+        bindings = config.get("ratelimits", [])
+        if not any(binding.get("name") == "FORM_RATE_LIMITER" for binding in bindings):
+            fail("Wrangler rate limiting binding is missing")
+    except (json.JSONDecodeError, OSError) as exc:
+        fail(f"Invalid Wrangler JSONC configuration: {exc}")
+
 if worker_file.is_file():
     worker = worker_file.read_text(encoding="utf-8")
     for required_fragment in (
@@ -132,11 +145,12 @@ if worker_file.is_file():
         "TELEGRAM_CHAT_ID",
         "Access-Control-Allow-Origin",
         "payload.website",
+        "FORM_RATE_LIMITER",
     ):
         if required_fragment not in worker:
             fail(f"Worker security / configuration check missing: {required_fragment}")
 
-for required in (ROOT / "robots.txt", ROOT / "sitemap.xml", ROOT / "404.html", ROOT / ".nojekyll"):
+for required in (ROOT / "robots.txt", ROOT / "sitemap.xml", ROOT / "404.html", ROOT / ".nojekyll", ROOT / "cloudflare/wrangler.jsonc"):
     if not required.exists():
         fail(f"Publishing file is missing: {required.relative_to(ROOT)}")
 
