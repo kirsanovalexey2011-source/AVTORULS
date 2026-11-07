@@ -119,6 +119,21 @@ test("forwards valid booking data to Telegram and returns success", async () => 
   });
 });
 
+test("blocks a client after the configured rate limit is reached", async () => {
+  const limitedEnv = {
+    ...env,
+    FORM_RATE_LIMITER: {
+      async limit({ key }) {
+        assert.equal(key, "unknown");
+        return { success: false };
+      }
+    }
+  };
+  const response = await worker.fetch(makeRequest(makePayload()), limitedEnv);
+  assert.equal(response.status, 429);
+  assert.equal((await response.json()).ok, false);
+});
+
 test("fails closed when Telegram secrets are missing", async () => {
   const response = await worker.fetch(
     makeRequest(makePayload()),
