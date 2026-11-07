@@ -400,3 +400,7 @@ img { display: block; max-width: 100%; }
   .price-row { grid-template-columns: 18px minmax(0, 1fr) auto; }
   .price-row__name { overflow-wrap: anywhere; }
 }
+
+.privacy-link-row { margin: -9px 0 17px 24px; font-size: 10px; line-height: 1.5; }
+.privacy-link-row a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.privacy-link-row a:hover { color: #e3ffc0; }
