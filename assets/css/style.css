@@ -223,7 +223,7 @@ img { display: block; max-width: 100%; }
 .footer-main { display: grid; grid-template-columns: 1.25fr .65fr .9fr 1fr; gap: 35px; padding-bottom: 52px; }
 .brand--footer .brand__name small { color: #839084; }
 .footer-brand > p { max-width: 265px; margin: 18px 0 18px; color: #a0aca1; font-size: 12px; line-height: 1.7; }
-.footer-demo { color: #718071; font-size: 8px; line-height: 1.6; letter-spacing: .1em; font-weight: 800; }
+.footer-demo { color: #829184; font-size: 8px; line-height: 1.6; letter-spacing: .1em; font-weight: 800; }
 .footer-col { display: flex; flex-direction: column; align-items: flex-start; gap: 11px; }
 .footer-title, .footer-cta > span { margin-bottom: 7px; color: var(--accent); font-size: 9px; letter-spacing: .15em; font-weight: 800; }
 .footer-col a, .footer-col span:not(.footer-title) { color: #a2ada3; font-size: 12px; transition: color .2s; }
@@ -231,7 +231,7 @@ img { display: block; max-width: 100%; }
 .footer-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
 .footer-cta a { font-size: 20px; font-weight: 800; letter-spacing: -.04em; }
 .footer-cta a b { color: var(--accent); font-size: 19px; }
-.footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding-top: 19px; border-top: 1px solid rgba(255,255,255,.12); color: #718071; font-size: 9px; letter-spacing: .1em; font-weight: 700; }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding-top: 19px; border-top: 1px solid rgba(255,255,255,.12); color: #829184; font-size: 9px; letter-spacing: .1em; font-weight: 700; }
 .footer-bottom a { color: #a9b4a9; }
 .footer-bottom a:hover { color: var(--accent); }
 .back-to-top { position: fixed; z-index: 30; right: 25px; bottom: 25px; display: grid; width: 44px; height: 44px; place-items: center; border: 0; border-radius: 50%; background: var(--accent); color: #1b2419; font-size: 21px; cursor: pointer; box-shadow: 0 6px 25px rgba(0,0,0,.2); opacity: 0; pointer-events: none; transform: translateY(10px); transition: opacity .2s, transform .2s; }
