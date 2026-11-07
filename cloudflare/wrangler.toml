@@ -1,9 +1,0 @@
-name = "garage78-booking"
-main = "worker.js"
-compatibility_date = "2026-11-07"
-
-[vars]
-ALLOWED_ORIGINS = "https://kirsanovalexey2011-source.github.io"
-
-[observability]
-enabled = true
