@@ -4,6 +4,7 @@
   const root = document.documentElement;
   const config = window.GARAGE78_CONFIG || {};
   const themeButton = document.querySelector(".theme-toggle");
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
   const menuButton = document.querySelector(".menu-toggle");
   const nav = document.querySelector(".nav");
   const bookingForm = document.querySelector("#booking-form");
@@ -90,6 +91,7 @@
 
   const applyTheme = (theme) => {
     root.dataset.theme = theme;
+    if (themeMeta) themeMeta.setAttribute("content", theme === "dark" ? "#171d19" : "#f3f2ec");
     if (themeButton) {
       const nextAction = theme === "dark" ? "Включить светлую тему" : "Включить тёмную тему";
       themeButton.setAttribute("aria-label", nextAction);
