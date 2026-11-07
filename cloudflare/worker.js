@@ -54,7 +54,11 @@ function allowedOrigin(request, env) {
 }
 
 function clean(value, maxLength) {
-  return String(value || "").trim().slice(0, maxLength);
+  return String(value || "")
+    .replace(/[\\x00-\\x1F\\x7F]/g, " ")
+    .replace(/\\s+/g, " ")
+    .trim()
+    .slice(0, maxLength);
 }
 
 export default {
@@ -65,31 +69,34 @@ export default {
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: responseHeaders(origin) });
     }
-    if (request.method !== "POST") return json({ ok: false, error: "Method not allowed." }, 405, origin);
+    if (request.method !== "POST") return json({ ok: false, error: "Метод запроса не поддерживается." }, 405, origin);
+
+    const contentLength = Number(request.headers.get("Content-Length") || 0);
+    if (contentLength > 12000) return json({ ok: false, error: "Слишком большой запрос." }, 413, origin);
 
     const contentType = request.headers.get("Content-Type") || "";
     if (!contentType.toLowerCase().includes("application/json")) {
-      return json({ ok: false, error: "JSON is required." }, 415, origin);
+      return json({ ok: false, error: "Ожидается JSON-запрос." }, 415, origin);
     }
 
     let rawBody = "";
     try {
       rawBody = await request.text();
     } catch {
-      return json({ ok: false, error: "Unable to read request." }, 400, origin);
+      return json({ ok: false, error: "Не удалось прочитать запрос." }, 400, origin);
     }
     if (new TextEncoder().encode(rawBody).length > 12000) {
-      return json({ ok: false, error: "Request is too large." }, 413, origin);
+      return json({ ok: false, error: "Слишком большой запрос." }, 413, origin);
     }
 
     let payload;
     try {
       payload = JSON.parse(rawBody);
     } catch {
-      return json({ ok: false, error: "Invalid JSON." }, 400, origin);
+      return json({ ok: false, error: "Некорректный формат данных." }, 400, origin);
     }
     if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
-      return json({ ok: false, error: "Invalid request body." }, 400, origin);
+      return json({ ok: false, error: "Некорректные данные формы." }, 400, origin);
     }
 
     // Honeypot: silently accept automated submissions without forwarding them.
@@ -98,7 +105,7 @@ export default {
     const startedAt = Number(payload.startedAt || 0);
     const elapsed = Date.now() - startedAt;
     if (!Number.isFinite(startedAt) || elapsed < 1800 || elapsed > 172800000) {
-      return json({ ok: false, error: "The form session has expired. Please reload the page." }, 400, origin);
+      return json({ ok: false, error: "Срок действия формы истёк. Обновите страницу и попробуйте снова." }, 400, origin);
     }
 
     const name = clean(payload.name, 80);
@@ -107,14 +114,15 @@ export default {
     const message = clean(payload.message, 1200);
     const phoneDigits = phone.replace(/\D/g, "");
 
-    if (name.length < 2) return json({ ok: false, error: "Please enter your name." }, 422, origin);
+    if (payload.consent !== true) return json({ ok: false, error: "Необходимо подтвердить согласие на обработку персональных данных." }, 422, origin);
+    if (name.length < 2) return json({ ok: false, error: "Укажите имя не короче двух символов." }, 422, origin);
     if (phoneDigits.length !== 11 || phoneDigits[0] !== "7") {
-      return json({ ok: false, error: "Please enter a valid Russian phone number." }, 422, origin);
+      return json({ ok: false, error: "Проверьте российский номер телефона." }, 422, origin);
     }
-    if (!ALLOWED_SERVICES.has(service)) return json({ ok: false, error: "Please select a valid service." }, 422, origin);
+    if (!ALLOWED_SERVICES.has(service)) return json({ ok: false, error: "Выберите услугу из списка." }, 422, origin);
 
     if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) {
-      return json({ ok: false, error: "The notification channel is not configured." }, 503, origin);
+      return json({ ok: false, error: "Канал приёма заявок ещё не настроен." }, 503, origin);
     }
 
     const telegramText = [
@@ -145,11 +153,11 @@ export default {
       let telegramResult = {};
       try { telegramResult = await telegramResponse.json(); } catch (_) {}
       if (!telegramResponse.ok || telegramResult.ok !== true) {
-        return json({ ok: false, error: "The notification could not be delivered." }, 502, origin);
+        return json({ ok: false, error: "Не удалось доставить уведомление администратору." }, 502, origin);
       }
       return json({ ok: true }, 200, origin);
     } catch {
-      return json({ ok: false, error: "The notification service is temporarily unavailable." }, 502, origin);
+      return json({ ok: false, error: "Сервис отправки временно недоступен." }, 502, origin);
     }
   }
 };
