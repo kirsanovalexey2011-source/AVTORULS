@@ -55,8 +55,8 @@ function allowedOrigin(request, env) {
 
 function clean(value, maxLength) {
   return String(value || "")
-    .replace(/[\\x00-\\x1F\\x7F]/g, " ")
-    .replace(/\\s+/g, " ")
+    .replace(/[\x00-\x1F\x7F]/g, " ")
+    .replace(/\s+/g, " ")
     .trim()
     .slice(0, maxLength);
 }
